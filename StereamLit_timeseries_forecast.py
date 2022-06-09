@@ -1,8 +1,13 @@
 ﻿from pandas_datareader import data as pdr
+from xgboost.sklearn import XGBRegressor
 import yfinance as yf
 import xgboost as xgb
 import pandas as pd
-
+import numpy as np
+from xgboost import XGBRegressor
+from sklearn import model_selection
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
 
 
  # <== that's all it takes :-)
@@ -59,8 +64,55 @@ def lag_prepare_data(df):
 
 df_lagged = lag_prepare_data(df_raw)
 
-y_cols = ['Close','Volume']
 
-y = df_lagged[y_cols]
-x = df_lagged[df_lagged.columns.difference(y_cols)]
+y_cols = ['Close'] 
+Y = df_lagged[y_cols]
+X = df_lagged[df_lagged.columns.difference(y_cols)]
+print(df_lagged)
+X = X
+Y = Y
+#X = df_lagged[:,0:4]
+#Y = df_lagged[:,4]
+#print(X, Y)
+
+
+seed = 7
+test_size = 0.33
+X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, test_size=test_size, random_state=seed)
+params = {
+        'eta': 1,
+        'objective': 'binary:logistic',
+        'gamma': 0.01,
+        'max_depth': 8,
+    }
+xgbtrain = xgb.DMatrix(X_train, Y_train)
+#bst = xgb.train(dtrain=xgbtrain, params=params)
+
+#print(X, Y)
+#model = XGBRegressor()
+reg = XGBRegressor(n_estimators=500, learning_rate=0.01)
+reg.fit(X_train, 
+        Y_train,
+        eval_set=[(X_train, Y_train), (X_test, Y_test)])
+
+predictions = reg.predict(X_test)
+
+Y_test['Result'] = predictions
+#print(predictions)
+print(Y_test)
+
+#model = XGBClassifier()
+#model.fit(X_train, y_train)
+#
+#https://www.youtube.com/watch?v=Wsfz3i1AXzY
+
+#print(bst)
+# make predictions for test data
+#y_pred = model.predict(X_test)
+#predictions = [round(value) for value in y_pred]
+
+#print(y_pred)
+
+#accuracy = accuracy_score(y_test, predictions)
+#print("Accuracy: %.2f%%" % (accuracy * 100.0))
 
