@@ -8,6 +8,7 @@ from xgboost import XGBRegressor
 from sklearn import model_selection
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
 
 
 av_instruments_names = ['S&P 500 ETF', 'CD PROJECT RED', 'TEN SQUARE GAMES', 'APPLE']
@@ -26,7 +27,9 @@ class TimeSeries:
         self.data = data
         self.data_lagged = self.lag_prepare_data(data)
         self.X_train, self.X_test, self.Y_train, self.Y_test = self.x_y(self.data_lagged)
-        self.y_result, self.results = self.xgboost_regresson_applience(self.X_train, self.X_test, self.Y_train, self.Y_test)
+        self.y_result, self.results, self.r_sq = self.xgboost_regresson_applience(self.X_train, self.X_test, self.Y_train, self.Y_test)
+        #self.y_result, self.results, self.r_sq = self.linear_regression_applience(self.X_train, self.X_test, self.Y_train, self.Y_test)
+
 
     def lag_prepare_data(self, df, trailing_window_size = 1):
         df_lagged = df.copy()
@@ -54,6 +57,15 @@ class TimeSeries:
         
         return X_train, X_test, Y_train, Y_test
 
+    def linear_regression_applience(self, X_train, X_test, Y_train, Y_test):
+        model = LinearRegression()
+        model.fit(X_train, Y_train)
+        predictions = model.predict(X_test)
+        r_sq = model.score(X_test, Y_test)
+        Y_test['Result'] = predictions
+        return predictions, Y_test, r_sq
+        
+
     def xgboost_regresson_applience(self, X_train, X_test, Y_train, Y_test):
         params = {
                 'eta': 1,
@@ -67,15 +79,16 @@ class TimeSeries:
         reg.fit(X_train, Y_train) #, eval_set=[(X_train, Y_train), (X_test, Y_test)])
 
         predictions = reg.predict(X_test)
+        r_sq = reg.score(X_test, Y_test)
         Y_test['Result'] = predictions
         #predictions = 1
         #Y_test =1 
-        return predictions, Y_test
+        return predictions, Y_test, r_sq
 
 
 
 df_raw = get_data(av_instruments[0], start_date, end_date)
 sample_prediction = TimeSeries(df_raw)
 
-print(sample_prediction.results)
+print(sample_prediction.r_sq)
 
