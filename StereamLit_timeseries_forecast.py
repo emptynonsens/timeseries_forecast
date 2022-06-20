@@ -9,6 +9,7 @@ from sklearn import model_selection
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
+import streamlit
 
 
 av_instruments_names = ['S&P 500 ETF', 'CD PROJECT RED', 'TEN SQUARE GAMES', 'APPLE']
@@ -87,8 +88,10 @@ class TimeSeries:
 
 
 
-df_raw = get_data(av_instruments[0], start_date, end_date)
-sample_prediction = TimeSeries(df_raw)
+#df_raw = get_data(av_instruments[0], start_date, end_date)
+#sample_prediction = TimeSeries(df_raw)
 
-print(sample_prediction.r_sq)
+#print(sample_prediction.r_sq)
+
+
 
