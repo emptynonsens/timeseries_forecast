@@ -3,7 +3,6 @@ from xgboost.sklearn import XGBRegressor
 import yfinance as yf
 import xgboost as xgb
 import pandas as pd
-import numpy as np
 from xgboost import XGBRegressor
 from sklearn import model_selection
 from sklearn.metrics import accuracy_score
