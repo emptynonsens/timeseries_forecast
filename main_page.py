@@ -67,8 +67,7 @@ class StreamlitApp:
             df_raw = get_data(str(ticker), start_date, end_date)
             st.dataframe(df_raw)
             plot_data = self.plot_chart_of_data(df_raw)
-        
-        button = st.download_button(label="Download data as CSV",data=df_raw.to_csv().encode('utf-8'),file_name='timeseries.csv',mime='text/csv',)
+            button = st.download_button(label="Download data as CSV",data=df_raw.to_csv().encode('utf-8'),file_name='timeseries.csv',mime='text/csv',)
 
         
 
