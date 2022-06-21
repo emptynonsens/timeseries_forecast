@@ -1,2 +1,2 @@
 New streamlit project for testing and comparing ml models.
-No frontend yet
+Currently working on MPV + frontend
