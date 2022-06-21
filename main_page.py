@@ -6,10 +6,13 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import datetime
 
+    
+
 class StreamlitApp:
     def __init__(self, title):
         self.main = '__main__'
         self.page_config = st.set_page_config(layout = 'wide')
+        self.github = st.write('Check out [GITHUB](https://github.com/emptynonsens/timeseries_forecast) for this project', unsafe_allow_html=True)
         self.tile = st.markdown(title) 
         self.sidebar_title = st.sidebar.markdown(title)
         self.av_instruments_names = ['S&P 500 ETF', 'CD PROJECT RED', 'TEN SQUARE GAMES', 'APPLE', 'OTHER']
@@ -45,14 +48,14 @@ class StreamlitApp:
 
     def plot_chart_of_data(self, plot_data):
         fig = make_subplots(specs=[[{"secondary_y": True}]])
-        fig.add_trace(go.Bar(x=plot_data.index, y=plot_data['Volume'], name="yaxis2 data"),secondary_y=True,)
-        fig.add_trace(go.Scatter(x=plot_data.index, y=plot_data['Close'], name="yaxis data"),secondary_y=False,)
-        fig.update_layout(title_text="Double Y Axis Example")
+        fig.add_trace(go.Bar(x=plot_data.index, y=plot_data['Volume'], name="Volume"),secondary_y=True,)
+        fig.add_trace(go.Scatter(x=plot_data.index, y=plot_data['Close'], name="Close price"),secondary_y=False,)
+        fig.update_layout(title_text="Closing and volume over time")
         # Set x-axis title
-        fig.update_xaxes(title_text="xaxis title")
+        #fig.update_xaxes(title_text="xaxis title")
         # Set y-axes titles
-        fig.update_yaxes(title_text="<b>primary</b> yaxis title", secondary_y=False)
-        fig.update_yaxes(title_text="<b>secondary</b> yaxis title", secondary_y=True)
+        fig.update_yaxes(title_text="<b>Closing</b> price", secondary_y=False)
+        fig.update_yaxes(title_text="<b>Volume</b> of ticker", secondary_y=True)
         fig.update_layout(width=1000, height=550)
 
         chart = st.write(fig)
@@ -65,7 +68,8 @@ class StreamlitApp:
             st.dataframe(df_raw)
             plot_data = self.plot_chart_of_data(df_raw)
         
-        #return df_raw
+        button = st.download_button(label="Download data as CSV",data=df_raw.to_csv().encode('utf-8'),file_name='timeseries.csv',mime='text/csv',)
+
         
 
 title = "# Home 🧮"
