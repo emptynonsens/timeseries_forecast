@@ -88,7 +88,7 @@ class TimeSeries:
 
 
 
-#df_raw = get_data(av_instruments[0], start_date, end_date)
+df_raw = get_data(av_instruments[0], start_date, end_date)
 #sample_prediction = TimeSeries(df_raw)
 
 #print(sample_prediction.r_sq)

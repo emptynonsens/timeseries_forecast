@@ -1,7 +1,7 @@
 ﻿# Contents of ~/my_app/pages/page_2.py
 import streamlit as st
 
-st.markdown("# Page 1 ❄️")
-st.sidebar.markdown("# Page 1 ❄️")
+st.markdown("# Prediction 📈")
+st.sidebar.markdown("# Prediction 📈")
 
 
