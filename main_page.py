@@ -22,6 +22,7 @@ class StreamlitApp:
         self.end_date = st.sidebar.date_input("Timeseries end date",datetime.date(2022, 1, 1))
         self.ticker = self.get_ticker(self.av_instruments_names, self.av_tickers)
         self.present_data = self.present_data(self.ticker, self.start_date, self.end_date)
+        self.custom_html = css_html()
 
     def get_ticker(self, av_instruments_names, av_tickers):
         def get_ticker_num(av_instruments_names, chosen_name):
